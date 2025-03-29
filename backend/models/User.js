@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    firstName: String,
-    lastName: String,
-    email: String,
-    role: String, // 'doctor' or 'patient'
-    password: String
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { 
+    type: String, 
+    required: true, 
+    unique: true, 
+    match: [/^[a-zA-Z0-9._%+-]+@gmail\.com$/, 'Invalid email format'] 
+  },
+  password: { type: String, required: true },
+  role: { type: String, enum: ['patient', 'doctor'], required: true },
 });
 
 module.exports = mongoose.model('User', userSchema);
