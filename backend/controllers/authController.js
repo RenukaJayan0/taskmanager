@@ -4,15 +4,18 @@ const User = require('../models/User');
 
 exports.register = async (req, res) => {
   try {
+    console.log('Register request:', req.body); // ✅ Add logging
     const { firstName, lastName, email, password, role } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ firstName, lastName, email, password: hashedPassword, role });
     await user.save();
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
+    console.error('Registration Error:', error.message);
     res.status(400).json({ error: error.message });
   }
 };
+
 
 exports.login = async (req, res) => {
   try {
@@ -27,3 +30,4 @@ exports.login = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
